@@ -20,7 +20,14 @@ func createFile(data []byte) (*os.File, error) {
 		return nil, err
 	}
 	_, err = f.Write(data)
-	return f, err
+	if err != nil {
+		return nil, err
+	}
+	_, err = f.Seek(0, 0)
+	if err != nil {
+		return nil, err
+	}
+	return f, nil
 }
 
 func init() {
