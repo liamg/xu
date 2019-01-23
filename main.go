@@ -9,7 +9,12 @@ import (
 
 func main() {
 
-	file, err := os.Open("./xu")
+	if len(os.Args) <= 1 {
+		fmt.Println("Please specify a path to examine.")
+		os.Exit(1)
+	}
+
+	file, err := os.Open(os.Args[1])
 	if err != nil {
 		fmt.Printf("Error: Cannot open file: %s\n", err)
 		os.Exit(1)
