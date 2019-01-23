@@ -5,8 +5,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/h2non/filetype"
-	"github.com/nsf/termbox-go"
+	"github.com/liamg/magic"
+	termbox "github.com/nsf/termbox-go"
 )
 
 type Editor struct {
@@ -28,14 +28,14 @@ func NewEditor(file *os.File) (*Editor, error) {
 		return nil, err
 	}
 
-	peek := make([]byte, 262)
+	peek := make([]byte, 32774)
 	if _, err := file.Read(peek); err != nil {
 		return nil, err
 	}
 
 	subtitle := "unknown file type"
-	if kind, err := filetype.Match(peek); err == nil {
-		subtitle = fmt.Sprintf("%s: %s", kind.Extension, kind.MIME.Value)
+	if kind, err := magic.Lookup(peek); err == nil {
+		subtitle = kind.Description
 	}
 
 	return &Editor{
